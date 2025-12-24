@@ -1,7 +1,12 @@
+// As-is fork provided by Kyle Simpson (getify):
+//   https://github.com/getify-as-is/qrcodejs
+
 class QrScanner {
     static readonly DEFAULT_CANVAS_SIZE = 400;
     static readonly NO_QR_CODE_FOUND = 'No QR code found';
-    private static _disableBarcodeDetector = false;
+    // native barcode api doesn't support binary (yet),
+    // so disabling for now
+    private static _disableBarcodeDetector = true;
     private static _workerMessageId = 0;
 
     /** @deprecated */
@@ -522,6 +527,7 @@ class QrScanner {
                         if (event.data.data !== null) {
                             resolve({
                                 data: event.data.data,
+                                binaryData: event.data.binaryData,
                                 cornerPoints: QrScanner._convertPoints(event.data.cornerPoints, scanRegion),
                             });
                         } else {
@@ -558,6 +564,7 @@ class QrScanner {
                             if (!scanResult) throw QrScanner.NO_QR_CODE_FOUND;
                             return {
                                 data: scanResult.rawValue,
+                                binaryData: Uint8Array.from(scanResult.rawValue),
                                 cornerPoints: QrScanner._convertPoints(scanResult.cornerPoints, scanRegion),
                             };
                         } catch (e) {
@@ -1093,6 +1100,7 @@ declare namespace QrScanner {
 
     export interface ScanResult {
         data: string;
+        binaryData: Uint8Array;
         // In clockwise order, starting at top left, but this might not be guaranteed in the future.
         cornerPoints: QrScanner.Point[];
     }
