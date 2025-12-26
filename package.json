@@ -1,6 +1,6 @@
 {
 	"name": "@getify-as-is/qr-scanner",
-	"version": "0.20251224.0",
+	"version": "0.20251225.0",
 	"description": "As-is fork of qr-scanner",
 	"main": "qr-scanner.js",
 	"module": "qr-scanner.min.js",
